@@ -1,7 +1,7 @@
 import os
 
-images_dir = r'C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation[yolov8m-seg]\data\train\images'
-labels_dir = r'C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation[yolov8m-seg]\data\train\labels'
+images_dir = r'C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation_yolov8m_seg\data\all\images'
+labels_dir = r'C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation_yolov8m_seg\data\all\labels'
 
 image_extensions = ['.jpg', '.png', '.jpeg']
 image_basenames = set()
