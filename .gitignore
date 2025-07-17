@@ -1,5 +1,6 @@
 *.pptx
 data/
+runs/
 *.pt
 *.pth
 *.mp4
