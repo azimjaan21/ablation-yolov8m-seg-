@@ -1,4 +1,5 @@
 *.pptx
+*.ppt
 data/
 *.pt
 *.pth

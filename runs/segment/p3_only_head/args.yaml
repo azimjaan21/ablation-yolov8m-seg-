@@ -13,7 +13,7 @@ cache: false
 device: '0'
 workers: 5
 project: runs/segment/
-name: p3_only_head
+name: p3_only_head2
 exist_ok: false
 pretrained: true
 optimizer: auto
@@ -102,4 +102,4 @@ auto_augment: randaugment
 erasing: 0.4
 cfg: null
 tracker: botsort.yaml
-save_dir: runs\segment\p3_only_head
+save_dir: runs\segment\p3_only_head2

@@ -3,7 +3,7 @@ import time
 from ultralytics import YOLO  
 
 # Load model
-model = YOLO(r'C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation_yolov8m_seg\runs\segment\yolov8m_seg\weights\best.pt')  
+model = YOLO(r'C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation_yolov8m_seg\runs\segment\p3_only_head\weights\best.pt')  
 model.to('cuda').eval()
 
 # Warm-up with normalized dummy input
