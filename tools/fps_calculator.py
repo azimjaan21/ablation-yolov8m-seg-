@@ -1,28 +1,20 @@
-import torch
-import time
-from ultralytics import YOLO  
+from ultralytics import YOLO
 
-# Load model
-model = YOLO(r'C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation_yolov8m_seg\runs\segment\p3_only_head\weights\best.pt')  
-model.to('cuda').eval()
+def main():
+    model = YOLO(r"C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation_yolov8m_seg\runs\segment\no_sppf\weights\best.pt")  
 
-# Warm-up with normalized dummy input
-dummy = torch.rand(1, 3, 640, 640).cuda()  # [0, 1] range
-for _ in range(10):
-    _ = model(dummy)
+    # Run validation (val dataset and set batch=1 for true FPS)
+    metrics = model.val(data= r"C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation_yolov8m_seg\ultralytics\ultralytics\cfg\datasets\gloves.yaml",
+                        imgsz=640, 
+                        batch=1,
+                        project='val_results',
+                        name='yolov8m_seg')  
+    # Set batch=1 for single-image FPS
 
-# Benchmark
-num_runs = 100
-total_time = 0.0
+    # speed metrics
+    print("Speed metrics (ms per image):", metrics.speed)
+    fps = 1000 / sum(metrics.speed.values())
+    print(f"Official FPS: {fps:.2f}")
 
-with torch.no_grad():
-    for _ in range(num_runs):
-        dummy = torch.rand(1, 3, 640, 640).cuda()  # Re-randomize each time
-        start = time.time()
-        _ = model(dummy)
-        torch.cuda.synchronize()
-        end = time.time()
-        total_time += (end - start)
-
-fps = num_runs / total_time
-print(f"FPS on TITAN RTX (batch=1, 640×640): {fps:.2f}")
+if __name__ == "__main__":
+    main()
