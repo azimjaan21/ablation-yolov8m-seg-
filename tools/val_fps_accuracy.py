@@ -1,14 +1,14 @@
 from ultralytics import YOLO
 
 def main():
-    model = YOLO(r"C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation_yolov8m_seg\runs\segment\no_P5_sppf\weights\best.pt")  
+    model = YOLO(r"C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation_yolov8m_seg\runs\segment\x2_rch\weights\best.pt")  
 
     # Run validation (val dataset and set batch=1 for true FPS)
     metrics = model.val(data= r"C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation_yolov8m_seg\ultralytics\ultralytics\cfg\datasets\gloves.yaml",
                         imgsz=640, 
                         batch=1,
                         project='val_results',
-                        name='no_P5')  
+                        name='x2_rch')  
     # Set batch=1 for single-image FPS
 
     # speed metrics
