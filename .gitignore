@@ -4,3 +4,4 @@ data/
 *.pt
 *.pth
 *.mp4
+visual_results/
