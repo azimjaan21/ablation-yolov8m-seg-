@@ -11,6 +11,6 @@ results = model.predict(
     save=True,              
     show=False,            
     project='visual_results/',
-    name='yolov8m_seg',   
+    name='7.mask_64',   
     exist_ok=True          
 )
