@@ -4,4 +4,6 @@ data/
 *.pt
 *.pth
 *.mp4
+*.engine
+*.onnx
 visual_results/

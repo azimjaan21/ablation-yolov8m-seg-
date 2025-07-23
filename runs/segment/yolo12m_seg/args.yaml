@@ -1,6 +1,6 @@
 task: segment
 mode: train
-model: C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation_yolov8m_seg\ultralytics\ultralytics\cfg\models\v9\yolov9c-seg.yaml
+model: C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation_yolov8m_seg\ultralytics\ultralytics\cfg\models\12\yolo12-seg.yaml
 data: C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation_yolov8m_seg\ultralytics\ultralytics\cfg\datasets\gloves.yaml
 epochs: 100
 time: null
@@ -13,7 +13,7 @@ cache: false
 device: '0'
 workers: 5
 project: runs/segment/
-name: yolov9c_seg
+name: yolo12m_seg
 exist_ok: false
 pretrained: true
 optimizer: auto
@@ -102,4 +102,4 @@ auto_augment: randaugment
 erasing: 0.4
 cfg: null
 tracker: botsort.yaml
-save_dir: runs\segment\yolov9c_seg
+save_dir: runs\segment\yolo12m_seg
