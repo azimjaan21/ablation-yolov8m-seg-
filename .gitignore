@@ -7,3 +7,4 @@ data/
 *.engine
 *.onnx
 visual_results/
+ultralytics/
