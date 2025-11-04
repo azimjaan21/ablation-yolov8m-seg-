@@ -1,0 +1,19 @@
+nc: 2
+scales:
+  m: [0.67, 0.75, 768]
+  # s: [0.33, 0.50, 1024]
+backbone:
+  - [-1, 1, Conv, [48, 3, 2]]
+  - [-1, 1, Conv, [96, 3, 2]]
+  - [-1, 2, C2f_ProgressiveLKALite, [ 96, 2, True, 3, 3, 7, 3]]  # <-- Add all arguments expected by the wrapper
+  - [-1, 1, Conv, [192, 3, 2]]
+  - [-1, 2, C2f_ProgressiveLKALite, [192, 2, True, 3, 3, 7, 3]]
+  - [-1, 1, Conv, [384, 3, 2]]
+  - [-1, 2, C2f_ProgressiveLKALite, [384, 2, True, 3, 3, 7, 3]]
+
+head:
+  - [-1, 1, nn.Upsample, [None, 2, "nearest"]]
+  - [[-1, 4], 1, Concat, [1]]
+  - [-1, 2, C2f_ProgressiveLKALite, [192, 2, True, 3, 3, 7, 3]]
+
+  - [[9], 1, Segment, [nc, 32, 128]]

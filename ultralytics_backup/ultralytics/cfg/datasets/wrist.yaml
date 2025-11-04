@@ -1,0 +1,8 @@
+train: C:/Users/dalab/Desktop/azimjaan21/RESEARCH/ablation_yolov8m_seg/data_wrist/train/images
+val: C:/Users/dalab/Desktop/azimjaan21/RESEARCH/ablation_yolov8m_seg/data_wrist/valid/images
+
+kpt_shape: [2, 3]
+flip_idx: [0, 1]
+
+nc: 1
+names: ['person']

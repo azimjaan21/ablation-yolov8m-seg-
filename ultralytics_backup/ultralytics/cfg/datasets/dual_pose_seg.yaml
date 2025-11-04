@@ -1,0 +1,57 @@
+# dual_pose_seg.yaml
+
+# Multiple dataset roots
+train:
+  - C:/Users/dalab/Desktop/azimjaan21/RESEARCH/ablation_yolov8m_seg/data/train/images
+  - C:/Users/dalab/Desktop/azimjaan21/RESEARCH/wrist_kpt/coco_17kpts/images/train2017
+
+val:
+  - C:/Users/dalab/Desktop/azimjaan21/RESEARCH/ablation_yolov8m_seg/data/valid/images
+  - C:/Users/dalab/Desktop/azimjaan21/RESEARCH/wrist_kpt/coco_17kpts/images/val2017
+
+nc: 2   # glove/no_glove for segmentation
+names:
+  0: gloves
+  1: no_gloves
+
+# Keypoints (pose)
+kpt_shape: [17, 3]
+flip_idx: [0, 2, 1, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 16, 15]
+keypoint_names:
+  - nose
+  - left_eye
+  - right_eye
+  - left_ear
+  - right_ear
+  - left_shoulder
+  - right_shoulder
+  - left_elbow
+  - right_elbow
+  - left_wrist
+  - right_wrist
+  - left_hip
+  - right_hip
+  - left_knee
+  - right_knee
+  - left_ankle
+  - right_ankle
+skeleton:
+  - [15, 13]
+  - [13, 11]
+  - [16, 14]
+  - [14, 12]
+  - [11, 12]
+  - [5, 11]
+  - [6, 12]
+  - [5, 6]
+  - [5, 7]
+  - [6, 8]
+  - [7, 9]
+  - [8, 10]
+  - [1, 2]
+  - [0, 1]
+  - [0, 2]
+  - [1, 3]
+  - [2, 4]
+  - [3, 5]
+  - [4, 6]

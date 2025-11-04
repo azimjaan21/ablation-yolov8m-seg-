@@ -1,0 +1,45 @@
+
+## ABLATION 2
+
+###     1- no c2f-half repeats
+##      2- ONLY SPPF remove
+
+
+nc: 2 
+scales: 
+  # [depth, width, max_channels]
+  m: [0.67, 0.75, 768]
+
+# YOLOv8.0n backbone
+backbone:
+  # [from, repeats, module, args]
+  - [-1, 1, Conv, [64, 3, 2]] # 0-P1/2
+  - [-1, 1, Conv, [128, 3, 2]] # 1-P2/4
+  - [-1, 3, C2f, [128, True]]  # 2
+  - [-1, 1, Conv, [256, 3, 2]] # 3-P3/8
+  - [-1, 6, C2f, [256, True]]  # 4
+  - [-1, 1, Conv, [512, 3, 2]] # 5-P4/16
+  - [-1, 6, C2f, [512, True]]  # 6
+  - [-1, 1, Conv, [1024, 3, 2]] # 7-P5/32
+  - [-1, 3, C2f, [1024, True]] # 8
+  # SPPF module removed (was layer 9)
+
+# YOLOv8.0n head
+head:
+  - [-1, 1, nn.Upsample, [None, 2, "nearest"]]  # 9 (was 10)
+  - [[-1, 6], 1, Concat, [1]] # cat backbone P4   # 10 (was 11)
+  - [-1, 3, C2f, [512]] # 11 (was 12)
+
+  - [-1, 1, nn.Upsample, [None, 2, "nearest"]]   # 12 (was 13)
+  - [[-1, 4], 1, Concat, [1]] # cat backbone P3   # 13 (was 14)
+  - [-1, 3, C2f, [256]] # 14 (P3/8-small) (was 15)
+
+  - [-1, 1, Conv, [256, 3, 2]]                   # 15 (was 16)
+  - [[-1, 11], 1, Concat, [1]] # cat head P4      # 16 (was 17, references layer 11 not 12)
+  - [-1, 3, C2f, [512]] # 17 (P4/16-medium) (was 18)
+
+  - [-1, 1, Conv, [512, 3, 2]]                   # 18 (was 19)
+  - [[-1, 8], 1, Concat, [1]] # cat head P5       # 19 (was 20, references layer 8 not 9)
+  - [-1, 3, C2f, [1024]] # 20 (P5/32-large) (was 21)
+
+  - [[14, 17, 20], 1, Segment, [nc, 32, 256]] # Segment(P3, P4, P5) # 21 (was 22, references layers 14,17,20 not 15,18,21)

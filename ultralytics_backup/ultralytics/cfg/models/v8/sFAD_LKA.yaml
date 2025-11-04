@@ -1,0 +1,38 @@
+# FAD-LKALite based YOLOv8m-seg for Glove=wearing Segmentation
+# Frequency-Adaptive Dynamic Large Kernel Attention
+
+nc: 2
+
+scales:
+  m: [0.67, 0.75, 768]
+
+backbone:
+  # [from, repeats, module, args]
+  - [-1, 1, Conv,       [48, 3, 2]]                        # 0 - P1/2
+  - [-1, 1, Conv,       [96, 3, 2]]                        # 1 - P2/4
+
+  # Stage 2: Feature depth 96, 2 repeats, residual, group=1, e=0.5, dwk=3, dil_k=7, dil=3
+  - [-1, 2, C2f_FADLKALite, [96, 2, True, 1, 0.5, 3, 7, 3]]  # 2 - P2/4
+
+  - [-1, 1, Conv,       [192, 3, 2]]                       # 3 - P3/8
+
+  # Stage 4: Feature depth 192
+  - [-1, 2, C2f_FADLKALite, [192, 2, True, 1, 0.5, 3, 7, 3]] # 4 - P3/8
+
+  - [-1, 1, Conv,       [384, 3, 2]]                       # 5 - P4/16
+
+  # Stage 6: Feature depth 384
+  - [-1, 2, C2f_FADLKALite, [384, 2, True, 1, 0.5, 3, 7, 3]] # 6 - P4/16
+
+head:
+  # Upsample P4 to P3 resolution
+  - [-1, 1, nn.Upsample, [None, 2, "nearest"]]            # 7
+
+  # Concat P4 (upsampled) and P3
+  - [[-1, 4], 1, Concat, [1]]                             # 8
+
+  # Small head block at P3 resolution
+  - [-1, 2, C2f_FADLKALite, [192, 2, True, 1, 0.5, 3, 7, 3]] # 9
+
+  # Segmentation head on P3
+  - [[9], 1, Segment, [nc, 32, 128]]                      # 10

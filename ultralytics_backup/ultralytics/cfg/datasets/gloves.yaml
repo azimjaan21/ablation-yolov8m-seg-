@@ -1,0 +1,12 @@
+path: C:/Users/dalab/Desktop/azimjaan21/RESEARCH/ablation_yolov8m_seg/data
+
+train:
+  - train/images/
+val:
+  - valid/images/
+test:
+  - test/images/
+
+names:
+  0: gloves
+  1: no_gloves

@@ -1,0 +1,48 @@
+# =========================================================
+# YOLO-LKALite (P3-only Head + P5 Backbone + SPPF)
+# Author: Azimjon Akhtamov
+# Description:
+#   Lightweight YOLO architecture for small PPE detection.
+#   - Large-Kernel Attention (LKALite) in C2f modules
+#   - Retains deep context (P5 + SPPF)
+#   - Single output head (P3)
+#   - Ideal for glove/no-glove segmentation or detection
+# =========================================================
+
+nc: 2  # number of classes (e.g., glove / no-glove)
+
+scales:
+  m: [0.67, 0.75, 768]
+
+# ===============================
+# BACKBONE
+# ===============================
+backbone:
+  # [from, repeats, module, args]
+  - [-1, 1, Conv, [48, 3, 2]]                       # 0-P1/2
+  - [-1, 1, Conv, [96, 3, 2]]                       # 1-P2/4
+  - [-1, 2, C2f_LKALite, [96, 96, 2, True]]         # 2
+  - [-1, 1, Conv, [192, 3, 2]]                      # 3-P3/8
+  - [-1, 2, C2f_LKALite, [192, 192, 2, True]]       # 4
+  - [-1, 1, Conv, [384, 3, 2]]                      # 5-P4/16
+  - [-1, 2, C2f_LKALite, [384, 384, 2, True]]       # 6
+  - [-1, 1, Conv, [768, 3, 2]]                      # 7-P5/32
+  - [-1, 2, C2f_LKALite, [768, 768, 2, True]]       # 8
+  - [-1, 1, SPPF, [768, 5]]                         # 9-SPPF (context aggregation)
+
+# ===============================
+# HEAD (Single P3 Head)
+# ===============================
+head:
+  # Step 1: Fuse deep semantics (P5/P4) upward
+  - [-1, 1, nn.Upsample, [None, 2, "nearest"]]      # 10: upsample P5 -> P4
+  - [[-1, 6], 1, Concat, [1]]                       # 11: concat P4 + upsampled P5
+  - [-1, 2, C2f_LKALite, [384, 384, 2]]             # 12: refined P4
+
+  # Step 2: Fuse P4 -> P3 for final output
+  - [-1, 1, nn.Upsample, [None, 2, "nearest"]]      # 13: upsample refined P4 -> P3
+  - [[-1, 4], 1, Concat, [1]]                       # 14: concat P3 + upsampled P4
+  - [-1, 2, C2f_LKALite, [192, 192, 2]]             # 15: final P3 fusion
+
+  # Step 3: Output segmentation head (single)
+  - [[15], 1, Segment, [nc, 32, 128]]               # 16: segmentation head (P3 only)

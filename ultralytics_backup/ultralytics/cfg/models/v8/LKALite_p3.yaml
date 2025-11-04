@@ -1,0 +1,26 @@
+ # n: [0.33, 0.25, 1024]
+ ## Prposed LKALite Attention based Network
+##      Head (P3 only) + C2f_LKALite
+nc: 2 
+
+scales:
+  m: [0.67, 0.75, 768]
+
+backbone:
+  # [from, repeats, module, args]
+  - [-1, 1, Conv, [48, 3, 2]]        # 0-P1/2
+  - [-1, 1, Conv, [96, 3, 2]]        # 1-P2/4
+  - [-1, 2, C2f_LKALite, [96, 96, 2, True]]  # 2   ### C2f_StarsBlock  ### C2f_eCBAM ###
+  - [-1, 1, Conv, [192, 3, 2]]       # 3-P3/8
+  - [-1, 2, C2f_LKALite, [192, 192, 2, True]] # 4
+  - [-1, 1, Conv, [384, 3, 2]]       # 5-P4/16
+  - [-1, 2, C2f_LKALite, [384, 384, 2, True]] # 6
+
+head:
+  - [-1, 1, nn.Upsample, [None, 2, "nearest"]]    # 7
+  - [[-1, 4], 1, Concat, [1]]                     # 8: P4 + P3
+  - [-1, 2, C2f_LKALite, [192, 192, 2]]                   # 9: P3/8-small
+
+  - [[9], 1, Segment, [nc, 32, 128]]  # 10: Segment Head (P3 only)
+
+
