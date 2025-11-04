@@ -1,6 +1,7 @@
 *.pptx
 *.ppt
 data/
+data_wrist/
 *.pt
 *.pth
 *.mp4
@@ -8,3 +9,14 @@ data/
 *.onnx
 visual_results/
 ultralytics/
+
+*.jpg
+*.png
+*.txt
+
+runs/
+*.pdf
+
+exp_results/
+exp_weights/
+weights/

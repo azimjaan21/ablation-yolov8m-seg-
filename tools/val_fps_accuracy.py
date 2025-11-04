@@ -1,17 +1,21 @@
 from ultralytics import YOLO
 
 def main():
-    model = YOLO("p3head.engine", task="segment")  
 
-    # Run validation (val dataset and set batch=1 for true FPS)
-    metrics = model.val(data= r"C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation_yolov8m_seg\ultralytics\ultralytics\cfg\datasets\gloves.yaml",
-                        imgsz=640, 
-                        batch=1,
-                        project='val_results',
-                        name='TRT_p3head')  
-    # Set batch=1 for single-image FPS
+    model = YOLO(r"C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation_yolov8m_seg\runs\multi_LKA\multi_LKA\weights\best.pt",
+                 task="segment")  
 
-    # speed metrics
+    # Run validation
+    metrics = model.val(
+        data=r"C:\Users\dalab\Desktop\azimjaan21\RESEARCH\ablation_yolov8m_seg\ultralytics\ultralytics\cfg\datasets\gloves.yaml",
+        imgsz=640,
+        batch=1,
+        visualize=True,
+        project="val_results/multi_LKA",
+        name="multi_LKA"
+    )
+
+    # Speed metrics
     print("Speed metrics (ms per image):", metrics.speed)
     fps = 1000 / sum(metrics.speed.values())
     print(f"Official FPS: {fps:.2f}")

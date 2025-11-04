@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 6
+names: ['Gloves', 'Helmet', 'No-Gloves', 'No-Helmet', 'No-Vest', 'Vest']
+
+roboflow:
+  workspace: azimjonvision
+  project: dataset-ppe-polygon-zzpu8-u3doj
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/azimjonvision/dataset-ppe-polygon-zzpu8-u3doj/dataset/1

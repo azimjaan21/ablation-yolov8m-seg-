@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./ultralytics/ultralytics/change_model"
+    ]
+}
